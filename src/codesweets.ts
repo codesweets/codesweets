@@ -109,9 +109,7 @@ const packSingle = async (file: string, outDirectory: string, deps: Dependencies
     plugins: [
       new webpack.DefinePlugin({
         "process.env": {
-          NODE_ENV: JSON.stringify(mode),
-          PASS: JSON.stringify(process.env.PASS),
-          USER: JSON.stringify(process.env.USER)
+          NODE_ENV: JSON.stringify(mode)
         }
       })
     ],
@@ -125,13 +123,14 @@ const packSingle = async (file: string, outDirectory: string, deps: Dependencies
     resolveLoader: {
       modules: [
         "node_modules",
-        __dirname
+        __dirname,
+        path.resolve(__dirname, "../node_modules")
       ]
     },
     target: "web"
   });
 
-  const result: webpack.Stats = await new Promise((resolve, reject) => compiler.run((err, stats) => {
+  const result = await new Promise((resolve, reject) => compiler.run((err: Error, stats: webpack.Stats) => {
     if (err) {
       reject(err);
       return;
