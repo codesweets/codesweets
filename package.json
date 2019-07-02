@@ -5,7 +5,7 @@
   "main": "bin/sweet-pack.js",
   "scripts": {
     "build": "./build.sh",
-    "test": "cd test && sweet-pack",
+    "test": "cd test && ../bin/sweet-pack-cli.js",
     "deploy": "echo 1"
   },
   "bin": {
