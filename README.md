@@ -1,11 +1,11 @@
-# Introducing sweet-pack
-[![Build Status](https://travis-ci.org/codesweets/sweet-pack.svg?branch=master)](https://travis-ci.org/codesweets/sweet-pack)
+# Introducing codesweets
+[![Build Status](https://travis-ci.org/codesweets/codesweets.svg?branch=master)](https://travis-ci.org/codesweets/codesweets)
 
 Tool for packaging code sweet tasks.
 
 # Installation
 ```
-npm install --save-dev sweet-pack
+npm install --save-dev codesweets
 ```
 
 # Building

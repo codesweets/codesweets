@@ -11,8 +11,8 @@
     "outDir": "bin"
   },
   "files": [
-    "src/sweet-pack.ts",
-    "src/sweet-pack-cli.ts",
+    "src/codesweets.ts",
+    "src/codesweets-cli.ts",
     "src/ts-schema.ts"
   ]
 }

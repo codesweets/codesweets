@@ -1,19 +1,19 @@
 {
-  "name": "sweet-pack",
+  "name": "codesweets",
   "version": "1.0.0",
   "description": "Tool for packaging code sweet tasks.",
-  "main": "bin/sweet-pack.js",
+  "main": "bin/codesweets.js",
   "scripts": {
     "build": "./build.sh",
-    "test": "cd test && ../bin/sweet-pack-cli.js",
+    "test": "cd test && ../bin/codesweets-cli.js",
     "deploy": "echo 1"
   },
   "bin": {
-    "sweet-pack": "bin/sweet-pack-cli.js"
+    "codesweets": "bin/codesweets-cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codesweets/sweet-pack.git"
+    "url": "https://github.com/codesweets/codesweets.git"
   },
   "author": "Trevor Sundberg",
   "license": "MIT",
