@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "target":"es2018",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "bin"
+  },
+  "files": [
+    "src/sweet-pack.ts",
+    "src/sweet-pack-cli.ts",
+    "src/ts-schema.ts"
+  ]
+}

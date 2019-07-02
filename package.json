@@ -1,0 +1,44 @@
+{
+  "name": "sweet-pack",
+  "version": "1.0.0",
+  "description": "Tool for packaging code sweet tasks.",
+  "main": "bin/sweet-pack.js",
+  "scripts": {
+    "build": "./build.sh",
+    "test": "cd test && sweet-pack",
+    "deploy": "echo 1"
+  },
+  "bin": {
+    "sweet-pack": "bin/sweet-pack-cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codesweets/sweet-pack.git"
+  },
+  "author": "Trevor Sundberg",
+  "license": "MIT",
+  "dependencies": {
+    "@types/dts-bundle": "0.0.31",
+    "@types/node-dir": "0.0.33",
+    "@types/rimraf": "^2.0.2",
+    "@types/tmp": "^0.1.0",
+    "@types/traverse": "^0.6.32",
+    "@types/webpack": "^4.4.32",
+    "@types/yargs": "^13.0.0",
+    "dts-bundle": "^0.7.3",
+    "node-dir": "^0.1.17",
+    "rimraf": "^2.6.3",
+    "title-case": "^2.1.1",
+    "tmp": "^0.1.0",
+    "traverse": "^0.6.6",
+    "ts-loader": "^6.0.2",
+    "typescript-json-schema": "^0.38.3",
+    "webpack": "^4.33.0",
+    "yargs": "^13.2.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "eslint": "^5.16.0"
+  }
+}
