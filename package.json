@@ -5,8 +5,7 @@
   "main": "bin/codesweets.js",
   "scripts": {
     "build": "./build.sh",
-    "test": "cd test && ../bin/codesweets-cli.js",
-    "deploy": "echo 1"
+    "test": "cd test && ../bin/codesweets-cli.js"
   },
   "bin": {
     "codesweets": "bin/codesweets-cli.js"
