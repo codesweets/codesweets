@@ -170,7 +170,7 @@ const packSingle = async (file: string, outDirectory: string, deps: Dependencies
 
 export default async (config: Config) => {
   const logger = config.logger || console.log;
-  const outDir = path.resolve(config.outDir || "dist");
+  const outDir = path.resolve(config.outDir || "bin");
   const entries = Object.entries(config.entry);
   const results = await Promise.all(entries.map((pair) => packSingle(pair[0], outDir, pair[1], logger)));
   results.forEach((result) => {
