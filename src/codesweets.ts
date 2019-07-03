@@ -1,7 +1,6 @@
 import dir from "node-dir";
 import fs from "fs";
 import path from "path";
-import rimraf from "rimraf";
 import tmp from "tmp";
 import webpack from "webpack";
 
@@ -25,10 +24,16 @@ export interface Config {
   outDir: string;
 }
 
-const packSingle = async (file: string, outDirectory: string, deps: Dependencies, logger: Logger) => {
+const packSingle = async (file: string, outDir: string, deps: Dependencies, logger: Logger) => {
   const {name} = path.parse(file);
-  const outDir = path.join(outDirectory, name);
-  const declarationDir = path.join(outDir, "declarations");
+
+  await fs.promises.mkdir(outDir, {recursive: true});
+  // eslint-disable-next-line no-sync
+  const declarationDir = tmp.dirSync({
+    dir: outDir,
+    unsafeCleanup: true
+  }).name;
+
   const tsconfig = {
     compilerOptions: {
       baseUrl: ".",
@@ -52,8 +57,8 @@ const packSingle = async (file: string, outDirectory: string, deps: Dependencies
     dir: process.cwd(),
     postfix: ".codesweets-tsconfig.json",
     prefix: "."
-  });
-  await fs.promises.writeFile(tsconfigFile.name, JSON.stringify(tsconfig, null, 2));
+  }).name;
+  await fs.promises.writeFile(tsconfigFile, JSON.stringify(tsconfig, null, 2));
 
   const externals: webpack.ExternalsObjectElement = {};
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
@@ -75,7 +80,7 @@ const packSingle = async (file: string, outDirectory: string, deps: Dependencies
           exclude: /node_modules|bin|dist/u,
           loader: "ts-loader",
           options: {
-            configFile: tsconfigFile.name
+            configFile: tsconfigFile
           },
           test: /\.tsx?$/u
         }
@@ -152,19 +157,23 @@ const packSingle = async (file: string, outDirectory: string, deps: Dependencies
     const declFileName = `${name}.d.ts`;
     const baseDeclFile = declFiles.find((declFile) => path.basename(declFile) === declFileName);
     if (baseDeclFile) {
+      const outDeclFile = path.join(outDir, declFileName);
       dts.bundle({
         baseDir: declarationDir,
         main: baseDeclFile,
         name,
-        out: path.join(outDir, declFileName),
-        outputAsModuleFolder: true
+        out: outDeclFile,
+        outputAsModuleFolder: false,
+        removeSource: true
       });
+
+      let declarations = await fs.promises.readFile(outDeclFile, "utf8");
+      declarations = declarations.replace(/import\("\./gu, `import("${name}`);
+      await fs.promises.writeFile(outDeclFile, declarations, "utf8");
     }
   } catch (err) {
     logger(err);
   }
-
-  await new Promise((resolve) => rimraf(declarationDir, resolve));
   return result;
 };
 
