@@ -49,12 +49,12 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, logg
       sourceMap: true,
       target: "es2018"
     },
-    files: [file]
+    files: [path.relative(outDir, file)]
   };
 
   // eslint-disable-next-line no-sync
   const tsconfigFile = tmp.fileSync({
-    dir: process.cwd(),
+    dir: outDir,
     postfix: ".codesweets-tsconfig.json",
     prefix: "."
   }).name;

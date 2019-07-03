@@ -1,12 +1,12 @@
 {
   "name": "codesweets",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Tool for packaging code sweet tasks.",
   "main": "bin/codesweets.js",
   "types": "bin/codesweets.d.ts",
   "scripts": {
     "build": "./build.sh",
-    "test": "cd test && ../bin/codesweets-cli.js"
+    "test": "./test.sh"
   },
   "bin": {
     "codesweets": "bin/codesweets-cli.js"
