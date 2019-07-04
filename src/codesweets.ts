@@ -135,7 +135,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, logg
   try {
     let final = "var __imports = {}\n";
     final += dependencies.map((dep, index) => "" +
-      `import __import${index} from ${JSON.stringify(`../${dep.name}/${dep.name}.js`)};\n` +
+      `import __import${index} from ${JSON.stringify(`/${dep.name}`)};\n` +
       `__imports[${JSON.stringify(dep.name)}] = __import${index};\n`).join("");
     const jsPath = path.join(outDir, `${name}.js`);
     final += await fs.promises.readFile(jsPath, "utf8");
