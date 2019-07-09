@@ -20,7 +20,7 @@ export interface Config {
   outDir: string;
 }
 
-export type Target = "node" | "browser"
+export type Target = "web" | "node"
 
 const packSingle = async (file: string, outDir: string, deps: Dependencies, target: Target, logger: Logger) => {
   const {name} = path.parse(file);
@@ -128,7 +128,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
         path.resolve(__dirname, "../node_modules")
       ]
     },
-    target: "web"
+    target
   });
 
   const result = await new Promise<webpack.Stats>((resolve, reject) => compiler.run((err, stats) => {
@@ -139,7 +139,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
     resolve(stats);
   }));
 
-  if (target === "browser") {
+  if (target === "web") {
     try {
       let final = "var __imports = {}\n";
       final += dependencies.map((dep, index) => "" +
@@ -161,7 +161,7 @@ export default async (config: Config) => {
   const outDir = path.resolve(config.outDir || "bin");
   const entries = Object.entries(config.entry);
   const targets = [
-    "browser",
+    "web",
     "node"
   ];
   // eslint-disable-next-line max-len
