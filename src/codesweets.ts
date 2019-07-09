@@ -94,6 +94,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       module: "empty",
       net: "mock",
       os: true,
+      path: true,
       process: true,
       tls: "mock"
     },

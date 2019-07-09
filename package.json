@@ -1,6 +1,6 @@
 {
   "name": "codesweets",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Tool for packaging code sweet tasks.",
   "main": "bin/codesweets.js",
   "types": "bin/codesweets.d.ts",
