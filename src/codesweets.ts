@@ -53,7 +53,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
 
   const alias = target === "node" ? {} : {
     path: "path-browserify",
-    process: "standalone-process"
+    process: "../bin/process.js"
   };
 
   const externals: webpack.ExternalsObjectElement = {};
