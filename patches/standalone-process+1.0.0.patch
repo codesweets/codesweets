@@ -1,0 +1,36 @@
+diff --git a/node_modules/standalone-process/dist/index.js b/node_modules/standalone-process/dist/index.js
+index f5f0aec..740e3fe 100644
+--- a/node_modules/standalone-process/dist/index.js
++++ b/node_modules/standalone-process/dist/index.js
+@@ -14,8 +14,29 @@ var _browserStdout2 = _interopRequireDefault(_browserStdout);
+ 
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+ 
++if (typeof process.browser !== 'undefined') {
+ process.hrtime = process.hrtime || _browserProcessHrtime2.default;
+ process.stdout = process.stdout || (0, _browserStdout2.default)();
+-
++process.pid = 1
++process.versions = {
++  node: '11.15.0',
++  v8: '7.0.276.38-node.19',
++  uv: '1.27.0',
++  zlib: '1.2.11',
++  brotli: '1.0.7',
++  ares: '1.15.0',
++  modules: '67',
++  nghttp2: '1.37.0',
++  napi: '4',
++  llhttp: '1.1.1',
++  http_parser: '2.8.0',
++  openssl: '1.1.1b',
++  cldr: '34.0',
++  icu: '63.1',
++  tz: '2018e',
++  unicode: '11.0'
++}
++process.version = 'v11.15.0'
++}
+ exports.default = process;
+ //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL2luZGV4LmpzIl0sIm5hbWVzIjpbInByb2Nlc3MiLCJocnRpbWUiLCJzdGRvdXQiXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBOzs7O0FBQ0E7Ozs7OztBQUVBQSxRQUFRQyxNQUFSLEdBQWlCRCxRQUFRQyxNQUFSLGtDQUFqQjtBQUNBRCxRQUFRRSxNQUFSLEdBQWlCRixRQUFRRSxNQUFSLElBQWtCLDhCQUFuQzs7a0JBRWVGLE8iLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgaHJ0aW1lIGZyb20gJ2Jyb3dzZXItcHJvY2Vzcy1ocnRpbWUnO1xuaW1wb3J0IEJyb3dzZXJTdGRvdXQgZnJvbSAnYnJvd3Nlci1zdGRvdXQnO1xuXG5wcm9jZXNzLmhydGltZSA9IHByb2Nlc3MuaHJ0aW1lIHx8IGhydGltZTtcbnByb2Nlc3Muc3Rkb3V0ID0gcHJvY2Vzcy5zdGRvdXQgfHwgQnJvd3NlclN0ZG91dCgpO1xuXG5leHBvcnQgZGVmYXVsdCBwcm9jZXNzO1xuIl19
+\ No newline at end of file

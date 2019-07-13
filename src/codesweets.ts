@@ -51,8 +51,9 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
   }).name;
   await fs.promises.writeFile(tsconfigFile, JSON.stringify(tsconfig, null, 2));
 
-  const externals: webpack.ExternalsObjectElement = {
-    path: "commonjs2 path-browserify"
+  const externals: webpack.ExternalsObjectElement = target === "node" ? {} : {
+    path: "commonjs2 path-browserify",
+    process: "commonjs2 standalone-process"
   };
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
@@ -96,7 +97,6 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       module: "empty",
       net: "mock",
       os: true,
-      process: "mock",
       tls: "mock"
     },
     output: {

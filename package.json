@@ -1,12 +1,13 @@
 {
   "name": "codesweets",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Tool for packaging code sweet tasks.",
   "main": "bin/codesweets.js",
   "types": "bin/codesweets.d.ts",
   "scripts": {
     "build": "./build.sh",
-    "test": "./test.sh"
+    "test": "./test.sh",
+    "postinstall": "patch-package"
   },
   "bin": {
     "codesweets": "bin/codesweets-cli.js"
@@ -23,6 +24,7 @@
     "@types/webpack": "^4.4.32",
     "@types/yargs": "^13.0.0",
     "path-browserify": "^1.0.0",
+    "standalone-process": "^1.0.0",
     "title-case": "^2.1.1",
     "tmp": "^0.1.0",
     "traverse": "^0.6.6",
@@ -35,6 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.16.0",
+    "patch-package": "^6.1.2",
     "typescript": "^3.4.5"
   }
 }
