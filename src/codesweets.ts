@@ -51,7 +51,9 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
   }).name;
   await fs.promises.writeFile(tsconfigFile, JSON.stringify(tsconfig, null, 2));
 
-  const externals: webpack.ExternalsObjectElement = {};
+  const externals: webpack.ExternalsObjectElement = {
+    path: "commonjs2 path-browserify"
+  };
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
   const libraryTarget = target === "node" ? "commonjs2" : "var";
@@ -94,8 +96,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       module: "empty",
       net: "mock",
       os: true,
-      path: true,
-      process: true,
+      process: "mock",
       tls: "mock"
     },
     output: {
@@ -145,10 +146,9 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       final += dependencies.map((dep, index) => "" +
       `import __import${index} from ${JSON.stringify(`/${dep.name}`)};\n` +
       `__imports[${JSON.stringify(dep.name)}] = __import${index};\n`).join("");
-      const jsPath = path.join(outDir, filename);
-      final += await fs.promises.readFile(jsPath, "utf8");
+      final += await fs.promises.readFile(path.join(outDir, filename), "utf8");
       final += `\nexport default ${name};`;
-      await fs.promises.writeFile(jsPath, final, "utf8");
+      await fs.promises.writeFile(path.join(outDir, `${name}-${target}-imports.js`), final, "utf8");
     } catch (err) {
       logger(err);
     }

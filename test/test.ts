@@ -3,9 +3,10 @@ import os from "os";
 import path from "path";
 import process from "process";
 console.log(os.platform());
-assert(typeof os.platform() === "string");
-assert(path.join("a", "b") === "a/b");
-assert(typeof process.pid === "number");
+assert.strictEqual(typeof os.platform(), "string");
+assert.strictEqual(path.join("a", "b"), "a/b");
+assert.strictEqual(path.posix.dirname("/test1/test2/test3"), "/test1/test2");
+assert.strictEqual(typeof process.pid, "number");
 
 try {
   console.log(require("external-test"));
