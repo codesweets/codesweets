@@ -1,7 +1,7 @@
+import "process";
 import assert from "assert";
 import os from "os";
 import path from "path";
-import process from "process";
 console.log(os.platform());
 assert.strictEqual(typeof os.platform(), "string");
 assert.strictEqual(path.join("a", "b"), "a/b");
