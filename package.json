@@ -1,6 +1,6 @@
 {
   "name": "codesweets",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Tool for packaging code sweet tasks.",
   "main": "bin/codesweets.js",
   "types": "bin/codesweets.d.ts",
@@ -18,6 +18,9 @@
   "author": "Trevor Sundberg",
   "license": "MIT",
   "dependencies": {
+    "@types/dropboxjs": "0.0.29",
+    "@types/filesystem": "0.0.29",
+    "@types/node": "^12.6.2",
     "@types/tmp": "^0.1.0",
     "@types/traverse": "^0.6.32",
     "@types/webpack": "^4.4.32",
