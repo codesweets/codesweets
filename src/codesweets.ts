@@ -51,10 +51,27 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
   }).name;
   await fs.promises.writeFile(tsconfigFile, JSON.stringify(tsconfig, null, 2));
 
-  const alias = target === "node" ? {} : {
-    path: "path-browserify",
-    process: path.resolve(__dirname, "./process.js")
+  const alias = {
+    bfsGlobal: require.resolve("browserfs"),
+    buffer: "browserfs/dist/shims/buffer.js",
+    bufferGlobal: "browserfs/dist/shims/bufferGlobal.js",
+    fs: "browserfs/dist/shims/fs.js",
+    path: "browserfs/dist/shims/path.js",
+    processGlobal: require.resolve("browserfs/dist/shims/process.js")
   };
+
+  const plugins = [
+    new webpack.ProvidePlugin({
+      BrowserFS: "bfsGlobal",
+      Buffer: "bufferGlobal",
+      process: "processGlobal"
+    }),
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify(mode)
+      }
+    })
+  ];
 
   const externals: webpack.ExternalsObjectElement = {};
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
@@ -75,6 +92,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
     externals,
     mode,
     module: {
+      noParse: /browserfs\.js/u,
       rules: [
         {
           exclude: /node_modules|bin|dist/u,
@@ -87,18 +105,20 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       ]
     },
     node: {
-      Buffer: true,
+      Buffer: false,
       __dirname: true,
       __filename: true,
       child_process: "empty",
       dns: "mock",
-      fs: "empty",
+      fs: false,
       fsevents: true,
       global: true,
       inspector: true,
       module: "empty",
       net: "mock",
       os: true,
+      path: false,
+      process: false,
       tls: "mock"
     },
     output: {
@@ -110,13 +130,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
     performance: {
       hints: false
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        "process.env": {
-          NODE_ENV: JSON.stringify(mode)
-        }
-      })
-    ],
+    plugins,
     resolve: {
       alias,
       extensions: [

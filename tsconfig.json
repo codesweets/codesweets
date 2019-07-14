@@ -13,7 +13,6 @@
   "files": [
     "src/codesweets.ts",
     "src/codesweets-cli.ts",
-    "src/process.ts",
     "src/ts-schema.ts"
   ]
 }
