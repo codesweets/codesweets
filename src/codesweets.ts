@@ -67,20 +67,20 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       process: "processGlobal"
     }),
     new webpack.DefinePlugin({
-      "global": "(typeof window !== 'undefined' && window || global)",
       "process.env": {
         NODE_ENV: JSON.stringify(mode)
-      }
+      },
+      "window": "(typeof window !== 'undefined' && window || global)"
     })
   ];
 
   const externals: webpack.ExternalsObjectElement = {};
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
-  const libraryTarget = target === "node" ? "commonjs" : "var";
+  const libraryTarget = target === "node" ? "commonjs2" : "var";
   for (const dep of dependencies) {
     externals[dep.path] = target === "node"
-      ? `commonjs ${dep.path}`
+      ? `commonjs2 ${dep.path}`
       : `__imports[${JSON.stringify(dep.name)}]`;
   }
 
