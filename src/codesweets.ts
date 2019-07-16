@@ -146,7 +146,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
         path.resolve(__dirname, "../node_modules")
       ]
     },
-    target
+    target: "web"
   });
 
   const result = await new Promise<webpack.Stats>((resolve, reject) => compiler.run((err, stats) => {

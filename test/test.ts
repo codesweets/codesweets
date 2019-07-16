@@ -24,7 +24,6 @@ BrowserFS.FileSystem.InMemory.Create(null, (err, mfs) => {
   BrowserFS.initialize(mfs);
   fs.writeFileSync("./test.txt", "hello", "utf8");
   assert.strictEqual(fs.readFileSync("./test.txt", "utf8"), "hello");
-  fs.unlinkSync("./test.txt");
 });
 
 export default {};
