@@ -67,6 +67,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       process: "processGlobal"
     }),
     new webpack.DefinePlugin({
+      "global": "(typeof window !== 'undefined' && window || global)",
       "process.env": {
         NODE_ENV: JSON.stringify(mode)
       }
@@ -76,10 +77,10 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
   const externals: webpack.ExternalsObjectElement = {};
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
-  const libraryTarget = target === "node" ? "commonjs2" : "var";
+  const libraryTarget = target === "node" ? "commonjs" : "var";
   for (const dep of dependencies) {
     externals[dep.path] = target === "node"
-      ? `commonjs2 ${dep.path}`
+      ? `commonjs ${dep.path}`
       : `__imports[${JSON.stringify(dep.name)}]`;
   }
 
@@ -112,7 +113,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       dns: "mock",
       fs: false,
       fsevents: true,
-      global: true,
+      global: false,
       inspector: true,
       module: "empty",
       net: "mock",
