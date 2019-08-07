@@ -75,7 +75,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, logg
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
   for (const dep of dependencies) {
-    externals[dep.path] = `__imports[${JSON.stringify(dep.name)}]`;
+    externals[dep.path] = `(typeof __imports !== 'undefined' && __imports[${JSON.stringify(dep.name)}])`;
   }
 
   const filename = `${name}.js`;
