@@ -12,11 +12,8 @@ assert.strictEqual(path.join("a", "b"), "a/b");
 assert.strictEqual(path.posix.dirname("/test1/test2/test3"), "/test1/test2");
 assert.strictEqual(typeof process.pid, "number");
 
-try {
-  console.log(require("external-test"));
-} catch (err) {
-  console.log("Require worked as expected");
-}
+console.log(require("@codesweets/core"));
+
 // eslint-disable-next-line new-cap
 BrowserFS.FileSystem.InMemory.Create(null, (err, mfs) => {
   if (err) {

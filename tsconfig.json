@@ -11,8 +11,9 @@
     "outDir": "bin"
   },
   "files": [
-    "src/codesweets.ts",
-    "src/codesweets-cli.ts",
+    "src/run.ts",
+    "src/packer.ts",
+    "src/cli.ts",
     "src/ts-schema.ts"
   ]
 }

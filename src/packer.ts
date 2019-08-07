@@ -20,9 +20,7 @@ export interface Config {
   outDir: string;
 }
 
-export type Target = "web" | "node"
-
-const packSingle = async (file: string, outDir: string, deps: Dependencies, target: Target, logger: Logger) => {
+const packSingle = async (file: string, outDir: string, deps: Dependencies, logger: Logger) => {
   const {name} = path.parse(file);
 
   await fs.promises.mkdir(outDir, {recursive: true});
@@ -69,22 +67,18 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify(mode)
-      },
-      "window": "(typeof window !== 'undefined' && window || global)"
+      }
     })
   ];
 
   const externals: webpack.ExternalsObjectElement = {};
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
-  const libraryTarget = target === "node" ? "commonjs2" : "var";
   for (const dep of dependencies) {
-    externals[dep.path] = target === "node"
-      ? `commonjs2 ${dep.path}`
-      : `__imports[${JSON.stringify(dep.name)}]`;
+    externals[dep.path] = `__imports[${JSON.stringify(dep.name)}]`;
   }
 
-  const filename = `${name}-${target}.js`;
+  const filename = `${name}.js`;
   const compiler = webpack({
     devtool: mode === "development" ? "source-map" : false,
     entry: {
@@ -113,7 +107,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
       dns: "mock",
       fs: false,
       fsevents: true,
-      global: false,
+      global: true,
       inspector: true,
       module: "empty",
       net: "mock",
@@ -125,7 +119,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
     output: {
       filename,
       library: name,
-      libraryTarget,
+      libraryTarget: "var",
       path: outDir
     },
     performance: {
@@ -158,18 +152,16 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, targ
     resolve(stats);
   }));
 
-  if (target === "web") {
-    try {
-      let final = "var __imports = {}\n";
-      final += dependencies.map((dep, index) => "" +
+  try {
+    let final = "var __imports = {}\n";
+    final += dependencies.map((dep, index) => "" +
       `import __import${index} from ${JSON.stringify(`/${dep.name}`)};\n` +
       `__imports[${JSON.stringify(dep.name)}] = __import${index};\n`).join("");
-      final += await fs.promises.readFile(path.join(outDir, filename), "utf8");
-      final += `\nexport default ${name};`;
-      await fs.promises.writeFile(path.join(outDir, `${name}-${target}-imports.js`), final, "utf8");
-    } catch (err) {
-      logger(err);
-    }
+    final += await fs.promises.readFile(path.join(outDir, filename), "utf8");
+    final += `\nexport default ${name};`;
+    await fs.promises.writeFile(path.join(outDir, `${name}-imports.js`), final, "utf8");
+  } catch (err) {
+    logger(err);
   }
   return result;
 };
@@ -178,13 +170,8 @@ export default async (config: Config) => {
   const logger = config.logger || console.log;
   const outDir = path.resolve(config.outDir || "bin");
   const entries = Object.entries(config.entry);
-  const targets = [
-    "web",
-    "node"
-  ];
-  // eslint-disable-next-line max-len
-  const results = await Promise.all(targets.map(async (target: Target) => Promise.all(entries.map((pair) => packSingle(pair[0], outDir, pair[1], target, logger)))));
-  [].concat(...results).forEach((stats: webpack.Stats) => {
+  const results = await Promise.all(entries.map((pair) => packSingle(pair[0], outDir, pair[1], logger)));
+  results.forEach((stats: webpack.Stats) => {
     logger(`\n${"-".repeat(80)}`);
     logger(stats.toString());
   });

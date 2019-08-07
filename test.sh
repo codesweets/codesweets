@@ -1,5 +1,5 @@
 set -e
 cd test
 rm -rf ./bin
-../bin/codesweets-cli.js
-node ./bin/test-node.js
+../bin/cli.js build
+../bin/cli.js run --script=./bin/test-imports.js

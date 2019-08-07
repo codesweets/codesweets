@@ -1,15 +1,16 @@
 {
   "name": "codesweets",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Tool for packaging code sweet tasks.",
-  "main": "bin/codesweets.js",
-  "types": "bin/codesweets.d.ts",
+  "main": "bin/packer.js",
+  "types": "bin/packer.d.ts",
   "scripts": {
     "build": "./build.sh",
-    "test": "./test.sh"
+    "test": "./test.sh",
+    "publish": "npm run build && npm test && npm publish"
   },
   "bin": {
-    "codesweets": "bin/codesweets-cli.js"
+    "codesweets": "bin/cli.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,9 @@
   "license": "MIT",
   "dependencies": {
     "@types/dropboxjs": "0.0.29",
+    "@types/express": "^4.17.0",
+    "@types/express-handlebars": "0.0.32",
+    "@types/express-http-proxy": "^1.5.11",
     "@types/filesystem": "0.0.29",
     "@types/node": "^12.6.2",
     "@types/tmp": "^0.1.0",
@@ -26,6 +30,13 @@
     "@types/webpack": "^4.4.32",
     "@types/yargs": "^13.0.0",
     "browserfs": "^1.4.3",
+    "electron": "^5.0.7",
+    "execa": "^2.0.3",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-http-proxy": "^1.5.1",
+    "puppeteer-core": "^1.19.0",
+    "puppeteer-in-electron": "^1.0.4",
     "title-case": "^2.1.1",
     "tmp": "^0.1.0",
     "traverse": "^0.6.6",
