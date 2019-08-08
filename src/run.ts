@@ -11,7 +11,7 @@ import yargs from "yargs";
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "1";
 process.noDeprecation = true;
 
-const DEBUG = false;
+const DEBUG = typeof process.env.CODESWEETS_DEBUG !== "undefined";
 
 yargs.command([
   "build",
