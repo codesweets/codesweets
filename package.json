@@ -36,7 +36,7 @@
     "express-handlebars": "^3.1.0",
     "express-http-proxy": "^1.5.1",
     "puppeteer-core": "^1.19.0",
-    "puppeteer-in-electron": "^1.0.4",
+    "puppeteer-in-electron": "^1.0.5",
     "title-case": "^2.1.1",
     "tmp": "^0.1.0",
     "traverse": "^0.6.6",
