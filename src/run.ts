@@ -35,9 +35,9 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
   expressApp.set("view engine", "handlebars");
   expressApp.set("views", path.join(__dirname, "../views"));
 
-  expressApp.use("/$/", express.static(path.resolve(__dirname, "..")));
-  expressApp.use("/_/", express.static("."));
-  expressApp.get("/_/loader", (req, res) => {
+  expressApp.use("/_codesweets/", express.static(path.resolve(__dirname, "..")));
+  expressApp.use("/_project/", express.static("."));
+  expressApp.get("/_project/_loader", (req, res) => {
     res.render("loader", {
       script: argv.script
     });
@@ -81,7 +81,7 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
 
   const server = expressApp.listen(0);
   const address = server.address() as AddressInfo;
-  await page.goto(`http://localhost:${address.port}/_/loader`, {
+  await page.goto(`http://localhost:${address.port}/_project/_loader`, {
     waitUntil: "networkidle0"
   });
 
