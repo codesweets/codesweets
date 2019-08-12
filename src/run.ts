@@ -35,7 +35,10 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
   expressApp.set("view engine", "handlebars");
   expressApp.set("views", path.join(__dirname, "../views"));
 
-  expressApp.use("/_codesweets/", express.static(path.resolve(__dirname, "..")));
+  expressApp.use("/_node_modules/:module", (req, res, next) => {
+    const dirPath = path.resolve(require.resolve(req.params.module), "..");
+    return express.static(dirPath)(req, res, next);
+  });
   expressApp.use("/_project/", express.static("."));
   expressApp.get("/_project/_loader", (req, res) => {
     res.render("loader", {
