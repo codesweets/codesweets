@@ -14,6 +14,8 @@ assert.strictEqual(typeof process.pid, "number");
 
 console.log(require("@codesweets/core"));
 
+// eslint-disable-next-line no-undef
+BrowserFS.install(window);
 // eslint-disable-next-line new-cap
 BrowserFS.FileSystem.InMemory.Create(null, (err, mfs) => {
   if (err) {

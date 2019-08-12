@@ -35,6 +35,7 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
   expressApp.set("view engine", "handlebars");
   expressApp.set("views", path.join(__dirname, "../views"));
 
+  expressApp.use("/$/", express.static(path.resolve(__dirname, "..")));
   expressApp.use("/_/", express.static("."));
   expressApp.get("/_/loader", (req, res) => {
     res.render("loader", {
@@ -49,6 +50,10 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
   const window = new BrowserWindow({
     show: DEBUG
   });
+
+  if (DEBUG) {
+    window.webContents.openDevTools();
+  }
 
   const page = await pie.getPage(browser, window);
 
