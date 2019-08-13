@@ -12,7 +12,7 @@ assert.strictEqual(path.join("a", "b"), "a/b");
 assert.strictEqual(path.posix.dirname("/test1/test2/test3"), "/test1/test2");
 assert.strictEqual(typeof process.pid, "number");
 
-console.log(require("@codesweets/core"));
+// /console.log(require("@codesweets/core"));
 
 // eslint-disable-next-line no-undef
 BrowserFS.install(window);
