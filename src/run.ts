@@ -30,6 +30,7 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
   describe: "The script we want to load"
 }), async (argv) => {
   console.log("Running...");
+  const script = argv.script as string;
   const expressApp = express();
   expressApp.engine("handlebars", exphbs());
   expressApp.set("view engine", "handlebars");
@@ -39,10 +40,11 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
     const dirPath = path.resolve(require.resolve(req.params.module), "..");
     return express.static(dirPath)(req, res, next);
   });
+  expressApp.use("/_bin/", express.static(__dirname));
   expressApp.use("/_project/", express.static("."));
   expressApp.get("/_project/_loader", (req, res) => {
     res.render("loader", {
-      script: argv.script
+      script
     });
   });
   expressApp.use("/", proxy("https://unpkg.com/"));

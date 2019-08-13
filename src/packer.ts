@@ -20,7 +20,7 @@ export interface Config {
   outDir: string;
 }
 
-const packSingle = async (file: string, outDir: string, deps: Dependencies, logger: Logger) => {
+const packSingle = async (file: string, outDir: string, deps: Dependencies) => {
   const {name} = path.parse(file);
 
   await fs.promises.mkdir(outDir, {recursive: true});
@@ -75,7 +75,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, logg
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
 
   for (const dep of dependencies) {
-    externals[dep.path] = `(typeof __imports !== 'undefined' && __imports[${JSON.stringify(dep.name)}])`;
+    externals[dep.path] = `commonjs2 /${dep.name}`;
   }
 
   const filename = `${name}.js`;
@@ -152,17 +152,6 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies, logg
     resolve(stats);
   }));
 
-  try {
-    let final = "var __imports = {}\n";
-    final += dependencies.map((dep, index) => "" +
-      `import __import${index} from ${JSON.stringify(`/${dep.name}`)};\n` +
-      `__imports[${JSON.stringify(dep.name)}] = __import${index};\n`).join("");
-    final += await fs.promises.readFile(path.join(outDir, filename), "utf8");
-    final += `\nexport default ${name};`;
-    await fs.promises.writeFile(path.join(outDir, `${name}-imports.js`), final, "utf8");
-  } catch (err) {
-    logger(err);
-  }
   return result;
 };
 
@@ -170,7 +159,7 @@ export default async (config: Config) => {
   const logger = config.logger || console.log;
   const outDir = path.resolve(config.outDir || "bin");
   const entries = Object.entries(config.entry);
-  const results = await Promise.all(entries.map((pair) => packSingle(pair[0], outDir, pair[1], logger)));
+  const results = await Promise.all(entries.map((pair) => packSingle(pair[0], outDir, pair[1])));
   results.forEach((stats: webpack.Stats) => {
     logger(`\n${"-".repeat(80)}`);
     logger(stats.toString());
