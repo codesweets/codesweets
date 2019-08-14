@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 (window as any).require = (path: string): any => {
-  console.log(`Require called with '${path}'`);
+  console.log(`Begin require '${path}'`);
   const request = new XMLHttpRequest();
   request.open("GET", path, false);
   request.send();
@@ -8,5 +8,7 @@
     throw new Error(request.statusText);
   }
   // eslint-disable-next-line no-eval
-  return eval(request.responseText || request.response);
+  const result = eval(request.responseText || request.response);
+  console.log(`End require '${path}'`, result);
+  return result;
 };

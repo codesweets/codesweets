@@ -119,7 +119,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies) => {
     output: {
       filename,
       library: name,
-      libraryTarget: "var",
+      libraryTarget: "assign",
       path: outDir
     },
     performance: {
