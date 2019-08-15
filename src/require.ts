@@ -18,7 +18,7 @@ windowAny.require = (path: string): any => {
   }
   // eslint-disable-next-line no-eval
   const result = eval(request.responseText || request.response);
-  windowAny.modules[path] = existingModule;
+  windowAny.modules[path] = result;
   console.log(`End require (imported) '${path}'`);
   return result;
 };
