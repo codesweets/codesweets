@@ -1,6 +1,15 @@
 /* eslint-disable no-undef */
-(window as any).require = (path: string): any => {
+// eslint-disable-next-line init-declarations,no-var
+declare var BrowserFS: any;
+const windowAny = window as any;
+windowAny.modules = {};
+windowAny.require = (path: string): any => {
   console.log(`Begin require '${path}'`);
+  const existingModule = windowAny.modules[path];
+  if (existingModule) {
+    console.log(`End require (existed) '${path}'`);
+    return existingModule;
+  }
   const request = new XMLHttpRequest();
   request.open("GET", path, false);
   request.send();
@@ -9,6 +18,12 @@
   }
   // eslint-disable-next-line no-eval
   const result = eval(request.responseText || request.response);
-  console.log(`End require '${path}'`, result);
+  windowAny.modules[path] = existingModule;
+  console.log(`End require (imported) '${path}'`);
   return result;
 };
+
+BrowserFS.install(window);
+BrowserFS.configure({
+  fs: "InMemory"
+}, () => 0);

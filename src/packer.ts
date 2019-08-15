@@ -49,27 +49,6 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies) => {
   }).name;
   await fs.promises.writeFile(tsconfigFile, JSON.stringify(tsconfig, null, 2));
 
-  const alias = {
-    bfsGlobal: require.resolve("browserfs"),
-    buffer: "browserfs/dist/shims/buffer.js",
-    bufferGlobal: "browserfs/dist/shims/bufferGlobal.js",
-    fs: "browserfs/dist/shims/fs.js",
-    path: "browserfs/dist/shims/path.js",
-    processGlobal: require.resolve("browserfs/dist/shims/process.js")
-  };
-
-  const plugins = [
-    new webpack.ProvidePlugin({
-      BrowserFS: "bfsGlobal",
-      Buffer: "bufferGlobal",
-      process: "processGlobal"
-    }),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify(mode)
-      }
-    })
-  ];
 
   const externals: webpack.ExternalsObjectElement = {};
   const dependencies = Object.entries(deps).map((pair) => ({name: pair[0], path: pair[1]}));
@@ -77,6 +56,10 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies) => {
   for (const dep of dependencies) {
     externals[dep.path] = `commonjs2 /${dep.name}`;
   }
+  externals.fs = "commonjs2 fs";
+  externals.path = "commonjs2 path";
+  externals.buffer = "commonjs2 buffer";
+  externals.process = "commonjs2 process";
 
   const filename = `${name}.js`;
   const compiler = webpack({
@@ -125,9 +108,7 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies) => {
     performance: {
       hints: false
     },
-    plugins,
     resolve: {
-      alias,
       extensions: [
         ".tsx",
         ".ts",
