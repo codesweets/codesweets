@@ -14,7 +14,7 @@
     "src/run.ts",
     "src/packer.ts",
     "src/cli.ts",
-    "src/require.ts",
+    "src/runtime.ts",
     "src/ts-schema.ts"
   ]
 }

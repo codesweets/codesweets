@@ -70,7 +70,6 @@ const packSingle = async (file: string, outDir: string, deps: Dependencies) => {
     externals,
     mode,
     module: {
-      noParse: /browserfs\.js/u,
       rules: [
         {
           exclude: /node_modules|bin|dist/u,

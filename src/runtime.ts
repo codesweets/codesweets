@@ -3,7 +3,9 @@
 declare var BrowserFS: any;
 const windowAny = window as any;
 windowAny.modules = {};
-windowAny.require = (path: string): any => {
+windowAny.require = (basePath: string): any => {
+  const unpackage = "https://unpkg.com";
+  const path = basePath.startsWith(unpackage) ? basePath : `${unpackage}${basePath}`;
   console.log(`Begin require '${path}'`);
   const existingModule = windowAny.modules[path];
   if (existingModule) {

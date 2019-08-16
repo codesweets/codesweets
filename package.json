@@ -29,7 +29,6 @@
     "@types/traverse": "^0.6.32",
     "@types/webpack": "^4.4.32",
     "@types/yargs": "^13.0.0",
-    "browserfs": "^1.4.3",
     "electron": "^5.0.7",
     "execa": "^2.0.3",
     "express": "^4.17.1",
