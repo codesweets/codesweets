@@ -3,13 +3,13 @@
 declare var BrowserFS: any;
 const windowAny = window as any;
 windowAny.modules = {};
-windowAny.require = (basePath: string): any => {
+windowAny.require = (partialPath: string): any => {
   const unpackage = "https://unpkg.com";
   const path = ((): string => {
-    if (basePath.startsWith(".") || basePath.startsWith(unpackage)) {
-      return basePath;
+    if (partialPath.startsWith(".") || partialPath.startsWith(unpackage)) {
+      return partialPath;
     }
-    return `${unpackage}${basePath}`;
+    return new URL(partialPath, unpackage).href;
   })();
   console.log(`Begin require '${path}'`);
   const existingModule = windowAny.modules[path];
