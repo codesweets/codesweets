@@ -31,6 +31,9 @@ windowAny.require = (partialPath: string): any => {
 };
 
 BrowserFS.install(window);
-BrowserFS.configure({
-  fs: "InMemory"
-}, () => 0);
+// eslint-disable-next-line new-cap
+BrowserFS.FileSystem.InMemory.Create(null, (error: any, inMemory: any) => {
+  // Note that this is synchronous and occurs before the end of Create.
+  BrowserFS.initialize(inMemory);
+  windowAny.inMemory = inMemory;
+});
