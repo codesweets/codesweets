@@ -24,7 +24,7 @@ windowAny.require = (partialPath: string): any => {
     throw new Error(request.statusText);
   }
   const lastModule = windowAny.currentModule;
-  windowAny.currentModule = path;
+  windowAny.currentModule = partialPath;
   // eslint-disable-next-line no-eval
   const result = eval(request.responseText || request.response);
   windowAny.currentModule = lastModule;
