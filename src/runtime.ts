@@ -23,8 +23,11 @@ windowAny.require = (partialPath: string): any => {
   if (request.status !== 200) {
     throw new Error(request.statusText);
   }
+  const lastModule = windowAny.currentModule;
+  windowAny.currentModule = path;
   // eslint-disable-next-line no-eval
   const result = eval(request.responseText || request.response);
+  windowAny.currentModule = lastModule;
   windowAny.modules[path] = result;
   console.log(`End require (imported) '${path}'`);
   return result;
