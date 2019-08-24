@@ -17,6 +17,8 @@ process.env.test = "hello";
 assert.strictEqual(process1.env.test, "hello");
 assert.strictEqual(process2.env.test, "hello");
 assert.strictEqual(Buffer.from("hello").toString(), "hello");
+// eslint-disable-next-line no-undef
+assert.strictEqual((window as any).currentModule, "test");
 console.log(require("@codesweets/core"));
 
 fs.writeFileSync("./test.txt", "hello", "utf8");

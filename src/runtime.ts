@@ -3,7 +3,8 @@
 declare var BrowserFS: any;
 const windowAny = window as any;
 windowAny.modules = {};
-windowAny.require = (partialPath: string): any => {
+windowAny.require = (partialPath: string, libraryName?: string): any => {
+  const library = libraryName || partialPath;
   const unpackage = "https://unpkg.com";
   const path = ((): string => {
     if (partialPath.startsWith(".") || partialPath.startsWith(unpackage)) {
@@ -24,7 +25,7 @@ windowAny.require = (partialPath: string): any => {
     throw new Error(request.statusText);
   }
   const lastModule = windowAny.currentModule;
-  windowAny.currentModule = partialPath;
+  windowAny.currentModule = library;
   // eslint-disable-next-line no-eval
   const result = eval(request.responseText || request.response);
   windowAny.currentModule = lastModule;

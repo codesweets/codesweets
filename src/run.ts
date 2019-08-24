@@ -28,8 +28,11 @@ yargs.command([
 
 yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.option("script", {
   describe: "The script we want to load"
+}).option("library", {
+  describe: "The name of the library when published to npm"
 }), async (argv) => {
   console.log("Running...");
+  const library = argv.library as string;
   const script = argv.script as string;
   const expressApp = express();
   expressApp.engine("handlebars", exphbs());
@@ -40,6 +43,7 @@ yargs.command("run", "Run your code in a browser instance", (yarg) => yarg.optio
   expressApp.use("/_project/", express.static("."));
   expressApp.get("/_project/_loader", (req, res) => {
     res.render("loader", {
+      library,
       script
     });
   });
