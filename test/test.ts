@@ -26,6 +26,9 @@ import process2 from "process";
   fs.writeFileSync("./test.txt", "hello", "utf8");
   assert.strictEqual(fs.readFileSync("./test.txt", "utf8"), "hello");
 
+  await new Promise((resolve) => fs.utimes("./test.txt", Date.now(), Date.now(), resolve));
+  fs.utimesSync("./test.txt", Date.now(), Date.now());
+
   const reader = fs.createReadStream("./test.txt", "utf8");
   const chunk: Buffer = await new Promise((resolve) => reader.on("data", resolve));
   assert.strictEqual(chunk.toString(), "hello");

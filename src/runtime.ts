@@ -49,6 +49,12 @@ BrowserFS.FileSystem.InMemory.Create(null, (error, inMemory) => {
 
   const fsAny = windowAny.require("fs");
   const fs: typeof import("fs") = fsAny;
+  // eslint-disable-next-line no-sync
+  fsAny.utimesSync = (path: any, atime: any, mtime: any) => {
+    // This only works because we're using an in memory file system (synchronous)
+    fs.utimes(path, atime, mtime, () => 0);
+  };
+
   fsAny.createReadStream = (path: string | number | Buffer | URL, options: string | any) => {
     // eslint-disable-next-line no-sync
     const file = fs.readFileSync(path, options);
