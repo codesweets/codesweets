@@ -2,6 +2,7 @@
 // eslint-disable-next-line init-declarations,no-var
 declare var BrowserFS: typeof import("browserfs");
 let main: any = null;
+let test: any = null;
 const windowAny = window as any;
 windowAny.modules = {};
 windowAny.require = (partialPath: string, libraryName?: string): any => {
@@ -30,6 +31,7 @@ windowAny.require = (partialPath: string, libraryName?: string): any => {
   // eslint-disable-next-line no-eval
   const result = eval(request.responseText);
   main = main && null;
+  test = test && null;
   windowAny.currentModule = lastModule;
   windowAny.modules[path] = result;
   console.log(`End require (imported) '${path}'`);
@@ -47,13 +49,13 @@ BrowserFS.FileSystem.InMemory.Create(null, (error, inMemory) => {
   BrowserFS.initialize(inMemory);
   windowAny.inMemory = inMemory;
 
+  // eslint-disable-next-line no-sync
+  inMemory.utimesSync = () => {
+    // Ignore times for now
+  };
+
   const fsAny = windowAny.require("fs");
   const fs: typeof import("fs") = fsAny;
-  // eslint-disable-next-line no-sync
-  fsAny.utimesSync = (path: any, atime: any, mtime: any) => {
-    // This only works because we're using an in memory file system (synchronous)
-    fs.utimes(path, atime, mtime, () => 0);
-  };
 
   fsAny.createReadStream = (path: string | number | Buffer | URL, options: string | any) => {
     // eslint-disable-next-line no-sync
