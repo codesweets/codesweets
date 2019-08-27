@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line init-declarations,no-var
-declare var BrowserFS: any;
+declare var BrowserFS: typeof import("browserfs");
+let main: any = null;
 const windowAny = window as any;
 windowAny.modules = {};
 windowAny.require = (partialPath: string, libraryName?: string): any => {
@@ -27,7 +28,8 @@ windowAny.require = (partialPath: string, libraryName?: string): any => {
   const lastModule = windowAny.currentModule;
   windowAny.currentModule = library;
   // eslint-disable-next-line no-eval
-  const result = eval(request.responseText || request.response);
+  const result = eval(request.responseText);
+  main = main && null;
   windowAny.currentModule = lastModule;
   windowAny.modules[path] = result;
   console.log(`End require (imported) '${path}'`);
@@ -35,9 +37,36 @@ windowAny.require = (partialPath: string, libraryName?: string): any => {
 };
 
 BrowserFS.install(window);
+import streamBuffers from "stream-buffers";
 // eslint-disable-next-line new-cap
-BrowserFS.FileSystem.InMemory.Create(null, (error: any, inMemory: any) => {
+BrowserFS.FileSystem.InMemory.Create(null, (error, inMemory) => {
+  if (error) {
+    throw error;
+  }
   // Note that this is synchronous and occurs before the end of Create.
   BrowserFS.initialize(inMemory);
   windowAny.inMemory = inMemory;
+
+  const fsAny = windowAny.require("fs");
+  const fs: typeof import("fs") = fsAny;
+  fsAny.createReadStream = (path: string | number | Buffer | URL, options: string | any) => {
+    // eslint-disable-next-line no-sync
+    const file = fs.readFileSync(path, options);
+    const stream = new streamBuffers.ReadableStreamBuffer(options);
+    const encoding =
+      typeof options === "string" && options ||
+      typeof options === "object" && options.encoding as string;
+    stream.put(file, encoding);
+    return stream;
+  };
+
+  fsAny.createWriteStream = (path: string | number | Buffer | URL, options: string | any) => {
+    const opts = typeof options === "string" ? {encoding: options} : options;
+    const stream = new streamBuffers.WritableStreamBuffer(opts);
+    stream.on("finish", () => {
+      // eslint-disable-next-line no-sync
+      fs.writeFileSync(path, stream.getContents(), opts);
+    });
+    return stream;
+  };
 });

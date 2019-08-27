@@ -25,16 +25,19 @@
     "@types/express-http-proxy": "^1.5.11",
     "@types/filesystem": "0.0.29",
     "@types/node": "^12.6.2",
+    "@types/stream-buffers": "^3.0.3",
     "@types/tmp": "^0.1.0",
     "@types/traverse": "^0.6.32",
     "@types/webpack": "^4.4.32",
     "@types/yargs": "^13.0.0",
+    "browserfs": "^1.4.3",
     "execa": "^2.0.3",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
     "express-http-proxy": "^1.5.1",
     "puppeteer-core": "^1.19.0",
     "puppeteer-in-electron": "^1.0.5",
+    "stream-buffers": "^3.0.2",
     "title-case": "^2.1.1",
     "tmp": "^0.1.0",
     "traverse": "^0.6.6",
@@ -50,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.16.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "webpack-cli": "^3.3.7"
   }
 }
